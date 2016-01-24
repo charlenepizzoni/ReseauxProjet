@@ -39,7 +39,7 @@ public class ClientFibonacci {
 	 
 	        output.println(this.valeur);
 	 
-	        Long result = input.nextLong();
+	        long result = input.nextLong();
 	 
 	        input.close();
 	        socket.close();
