@@ -57,6 +57,7 @@ public class ClientFactorielle {
 		int valeur = Integer.parseInt(argv[2]);
 		int resultat = -1;
 		ClientFactorielle cf = new ClientFactorielle(port, ip, valeur);
+		
 		try {
 			resultat = cf.demanderCalcul();
 		} catch (IOException e) {

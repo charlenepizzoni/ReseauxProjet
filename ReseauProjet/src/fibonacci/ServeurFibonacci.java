@@ -97,8 +97,8 @@ public class ServeurFibonacci {
 		InetAddress ip = InetAddress.getLocalHost(); // IP du premier serveur
 		ServeurFibonacci sf1 = new ServeurFibonacci(port1, ip);
 		ServeurFibonacci sf2 = new ServeurFibonacci(port2, ip);
-		sf1.run();
-		sf2.run();
+		sf1.start();
+		sf2.start();
 	}
 	
 	

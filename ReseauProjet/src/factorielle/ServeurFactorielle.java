@@ -3,6 +3,7 @@ package factorielle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -44,13 +45,13 @@ public class ServeurFactorielle {
 			int val;
 			int res;
 			InputStream input;
-			OutputStream output;
+			//OutputStream output;
 			try {
 				input = socket.getInputStream();
 				Scanner sc = new Scanner(input);
 		        if (sc.hasNext()) {
-		            String msg = sc.nextLine();
-		            val = Integer.parseInt(msg);
+		            val = sc.nextInt();
+		            
 		            if (val < 1){
 		            	res = 1;
 		            }
@@ -63,8 +64,9 @@ public class ServeurFactorielle {
 		            	res = val * cf.demanderCalcul();
 		            	getCache().put(val, res);
 		            }
-		            output = socket.getOutputStream();
-		            output.write(res);
+		            PrintStream outputPrint = new PrintStream(socket.getOutputStream());
+		            
+		            outputPrint.println(res);
 		        }
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -72,16 +74,16 @@ public class ServeurFactorielle {
 		}
 	}
 	
-	public void run() throws IOException{
+	public void runServeur() throws IOException{
 		Socket socket;
 		while(true){
 			socket = sSocket.accept();
 			ClientThread clientThread = new ClientThread(port, ip, socket);
-			clientThread.run();
+			clientThread.start();
 		}
 	}
 	
-	public Map<Integer, Integer> getCache(){
+	synchronized public Map<Integer, Integer> getCache(){
 		return this.cache;
 	}
 	
@@ -90,7 +92,7 @@ public class ServeurFactorielle {
 		InetAddress ip;
 		ip = InetAddress.getLocalHost();
 		ServeurFactorielle sf = new ServeurFactorielle(port, ip);
-		sf.run();
+		sf.runServeur();
 	}
 	
 }
