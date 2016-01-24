@@ -50,14 +50,16 @@ public class ServeurFibonacci extends Thread {
 			int val;
 			long res;
 			InputStream input;
-			OutputStream output;
 			try {
 				input = socket.getInputStream();
 				Scanner sc = new Scanner(input);
 		        if (sc.hasNext()) {
 		            String msg = sc.nextLine();
 		            val = Integer.parseInt(msg);
-		            if (val < 2){
+		            if ( val == 0 ){
+		            	res = 0;
+		            }
+		            else if (val == 1){
 		            	res = 1;
 		            }
 		            else if(getCache().containsKey(val)){
@@ -86,7 +88,7 @@ public class ServeurFibonacci extends Thread {
 				socket = sSocket.accept();
 			
 			ClientThread clientThread = new ClientThread(port1, port2, ip, socket);
-			clientThread.run();
+			clientThread.start();
 			
 			} catch (IOException e) {
 				e.printStackTrace();

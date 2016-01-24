@@ -30,9 +30,9 @@ public class ClientFibonacci {
 	 * @return la valeur de la factorielle de l'entier this.valeur
 	 * @throws IOException
 	 */
-	public long demanderCalcul (int port, InetAddress ip) throws IOException{
-		 	InetAddress addresse = this.ip;
-	        Socket socket = new Socket(addresse, this.port);
+	public long demanderCalcul (int portParametre, InetAddress ipParametre) throws IOException{
+		 	InetAddress addresse = ipParametre;
+	        Socket socket = new Socket(addresse, portParametre);
 	 
 	        Scanner input = new Scanner(socket.getInputStream());
 	        PrintStream output = new PrintStream(socket.getOutputStream());
@@ -42,6 +42,7 @@ public class ClientFibonacci {
 	        long result = input.nextLong();
 	 
 	        input.close();
+	        output.close();
 	        socket.close();
 	 
 	        return result;
@@ -63,6 +64,6 @@ public class ClientFibonacci {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("(" + valeur + ")! = " + resultat);		
+		System.out.println("F(" + valeur + ") = " + resultat);		
 	}
 }
