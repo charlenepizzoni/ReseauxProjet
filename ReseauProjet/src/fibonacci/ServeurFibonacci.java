@@ -31,12 +31,14 @@ public class ServeurFibonacci {
 	}
 	
 	private class ClientThread extends Thread {
-		int port;
+		int port1;
+		int port2;
 		InetAddress ip;
 		Socket socket;
 		
-		public ClientThread(int port, InetAddress ip, Socket socket){
-			this.port = port;
+		public ClientThread(int port1, int port2, InetAddress ip, Socket socket){
+			this.port1 = port1;
+			this.port2 = port2;
 			this.ip = ip;
 			this.socket = socket;
 		}
@@ -52,7 +54,7 @@ public class ServeurFibonacci {
 		        if (sc.hasNext()) {
 		            String msg = sc.nextLine();
 		            val = Integer.parseInt(msg);
-		            if (val < 1){
+		            if (val < 2){
 		            	res = 1;
 		            }
 		            else if(getCache().containsKey(val)){
@@ -60,8 +62,9 @@ public class ServeurFibonacci {
 		            }
 		            		            
 		            else {
-		            	ClientFibonacci cf = new ClientFibonacci(port, ip, val-1);
-		            	res = val * cf.demanderCalcul(this.port, this.ip);
+		            	ClientFibonacci cf1 = new ClientFibonacci(port1, ip, val-1);
+		            	ClientFibonacci cf2 = new ClientFibonacci(port2, ip, val-2);
+		            	res = cf1.demanderCalcul(this.port1, this.ip)  +  cf2.demanderCalcul(this.port2, this.ip);
 		            	getCache().put(val, res);
 		            }
 		            output = socket.getOutputStream();
@@ -77,7 +80,7 @@ public class ServeurFibonacci {
 		Socket socket;
 		while(true){
 			socket = sSocket.accept();
-			ClientThread clientThread = new ClientThread(port, ip, socket);
+			ClientThread clientThread = new ClientThread(port1, port2, ip, socket);
 			clientThread.run();
 		}
 	}
@@ -87,11 +90,11 @@ public class ServeurFibonacci {
 	}
 	
 	public void main(String[] argv) throws IOException{
-		int port  = Integer.parseInt(argv[0]);
-		InetAddress ip;
-		ip = InetAddress.getLocalHost();
-		ServeurFibonacci sf1 = new ServeurFibonacci(port, ip);
-		ServeurFibonacci sf2 = new ServeurFibonacci(port, ip);
+		int port1  = Integer.parseInt(argv[0]); // port du premier serveur
+		int port2  = Integer.parseInt(argv[1]); // port du second serveur
+		InetAddress ip = InetAddress.getLocalHost(); // IP du premier serveur
+		ServeurFibonacci sf1 = new ServeurFibonacci(port1, ip);
+		ServeurFibonacci sf2 = new ServeurFibonacci(port2, ip);
 		sf1.run();
 		sf2.run();
 	}
