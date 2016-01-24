@@ -14,6 +14,8 @@ import fibonacci.ClientFibonacci;
 
 public class ServeurFibonacci {
 
+	static int port1;
+	static int port2;
 	int port;
 	InetAddress ip;
 	ServerSocket sSocket;
@@ -90,8 +92,8 @@ public class ServeurFibonacci {
 	}
 	
 	public void main(String[] argv) throws IOException{
-		int port1  = Integer.parseInt(argv[0]); // port du premier serveur
-		int port2  = Integer.parseInt(argv[1]); // port du second serveur
+		port1  = Integer.parseInt(argv[0]); // port du premier serveur
+		port2  = Integer.parseInt(argv[1]); // port du second serveur
 		InetAddress ip = InetAddress.getLocalHost(); // IP du premier serveur
 		ServeurFibonacci sf1 = new ServeurFibonacci(port1, ip);
 		ServeurFibonacci sf2 = new ServeurFibonacci(port2, ip);
