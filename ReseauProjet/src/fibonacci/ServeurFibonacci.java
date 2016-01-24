@@ -91,7 +91,7 @@ public class ServeurFibonacci {
 		return this.cache;
 	}
 	
-	public void main(String[] argv) throws IOException{
+	public static void main(String[] argv) throws IOException{
 		port1  = Integer.parseInt(argv[0]); // port du premier serveur
 		port2  = Integer.parseInt(argv[1]); // port du second serveur
 		InetAddress ip = InetAddress.getLocalHost(); // IP du premier serveur
