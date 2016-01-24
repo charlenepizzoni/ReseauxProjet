@@ -2,6 +2,7 @@ package factorielle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,7 +40,28 @@ public class ServeurFactorielle {
 		}
 		
 		public void run(){
-			
+			int val;
+			int res;
+			InputStream input;
+			OutputStream output;
+			try {
+				input = socket.getInputStream();
+				Scanner sc = new Scanner(input);
+		        if (sc.hasNext()) {
+		            String msg = sc.nextLine();
+		            val = Integer.parseInt(msg);
+		            if (val < 1){
+		            	res = 1;
+		            }
+		            else {
+		            	ClientFactorielle cf = new ClientFactorielle(port, ip, val-1);
+		            }
+		            output = socket.getOutputStream();
+		            output.write(res);
+		        }
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -58,15 +80,6 @@ public class ServeurFactorielle {
 		ip = InetAddress.getLocalHost();
 		ServeurFactorielle sf = new ServeurFactorielle(port, ip);
 		sf.run();
-		
-		/*InputStream input = socket.getInputStream();
-		Scanner sc = new Scanner(input);
-        while (true) {
-            if (sc.hasNext()) {
-                String msg = sc.nextLine();
-                System.out.println(msg);
-            }//if
-        }//while */
 	}
 	
 }
