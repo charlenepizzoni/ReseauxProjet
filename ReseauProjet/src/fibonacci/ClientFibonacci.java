@@ -3,11 +3,12 @@ package fibonacci;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
-import factorielle.ClientFactorielle;
 
 public class ClientFibonacci {
 
@@ -29,15 +30,21 @@ public class ClientFibonacci {
 	 * @return la valeur de la factorielle de l'entier this.valeur
 	 * @throws IOException
 	 */
-	public int demanderCalcul (int port, InetAddress ip) throws IOException{
-		int res;
-		Socket s = new Socket(ip, port);
-		InputStream input = s.getInputStream();
-		OutputStream output = s.getOutputStream();
-		output.write(this.valeur);
-		res = input.read();		
-		s.close();
-		return res;
+	public long demanderCalcul (int port, InetAddress ip) throws IOException{
+		 	InetAddress addresse = this.ip;
+	        Socket socket = new Socket(addresse, this.port);
+	 
+	        Scanner input = new Scanner(socket.getInputStream());
+	        PrintStream output = new PrintStream(socket.getOutputStream());
+	 
+	        output.println(this.valeur);
+	 
+	        Long result = input.nextLong();
+	 
+	        input.close();
+	        socket.close();
+	 
+	        return result;
 	}
 	
 	/**
@@ -49,7 +56,7 @@ public class ClientFibonacci {
 		int port  = Integer.parseInt(argv[0]);
 		InetAddress ip = InetAddress.getByName(argv[1]);
 		int valeur = Integer.parseInt(argv[2]);
-		int resultat = -1;
+		long resultat = -1;
 		ClientFibonacci cf = new ClientFibonacci(port, ip, valeur);
 		try {
 			resultat = cf.demanderCalcul(port, ip);

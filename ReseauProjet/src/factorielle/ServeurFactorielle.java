@@ -17,7 +17,7 @@ public class ServeurFactorielle {
 	int port;
 	InetAddress ip;
 	ServerSocket sSocket;
-	Map<Integer, Integer> cache;
+	Map<Integer, Long> cache;
 	
 	ServeurFactorielle(int port, InetAddress ip){
 		this.port = port;
@@ -27,7 +27,7 @@ public class ServeurFactorielle {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.cache = new HashMap<Integer, Integer>();
+		this.cache = new HashMap<Integer, Long>();
 	}
 	
 	private class ClientThread extends Thread {
@@ -43,7 +43,7 @@ public class ServeurFactorielle {
 		
 		public void run(){
 			int val;
-			int res;
+			long res;
 			InputStream input;
 			//OutputStream output;
 			try {
@@ -83,7 +83,7 @@ public class ServeurFactorielle {
 		}
 	}
 	
-	synchronized public Map<Integer, Integer> getCache(){
+	synchronized public Map<Integer, Long> getCache(){
 		return this.cache;
 	}
 	

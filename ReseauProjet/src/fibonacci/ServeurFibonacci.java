@@ -3,6 +3,7 @@ package fibonacci;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,14 +13,14 @@ import java.util.Scanner;
 
 import fibonacci.ClientFibonacci;
 
-public class ServeurFibonacci {
+public class ServeurFibonacci extends Thread {
 
 	static int port1;
 	static int port2;
 	int port;
 	InetAddress ip;
 	ServerSocket sSocket;
-	Map<Integer, Integer> cache;
+	Map<Integer, Long> cache;
 	
 	ServeurFibonacci(int port, InetAddress ip){
 		this.port = port;
@@ -29,7 +30,7 @@ public class ServeurFibonacci {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.cache = new HashMap<Integer, Integer>();
+		this.cache = new HashMap<Integer, Long>();
 	}
 	
 	private class ClientThread extends Thread {
@@ -47,7 +48,7 @@ public class ServeurFibonacci {
 		
 		public void run(){
 			int val;
-			int res;
+			long res;
 			InputStream input;
 			OutputStream output;
 			try {
@@ -69,8 +70,8 @@ public class ServeurFibonacci {
 		            	res = cf1.demanderCalcul(this.port1, this.ip)  +  cf2.demanderCalcul(this.port2, this.ip);
 		            	getCache().put(val, res);
 		            }
-		            output = socket.getOutputStream();
-		            output.write(res);
+		            PrintStream outputPrint = new PrintStream(socket.getOutputStream());
+			        outputPrint.println(res);
 		        }
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -78,16 +79,22 @@ public class ServeurFibonacci {
 		}
 	}
 	
-	public void run() throws IOException{
+	public void run(){
 		Socket socket;
 		while(true){
-			socket = sSocket.accept();
+			try {
+				socket = sSocket.accept();
+			
 			ClientThread clientThread = new ClientThread(port1, port2, ip, socket);
 			clientThread.run();
+			
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public Map<Integer, Integer> getCache(){
+	public Map<Integer, Long> getCache(){
 		return this.cache;
 	}
 	

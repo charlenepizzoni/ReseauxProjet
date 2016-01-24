@@ -29,7 +29,7 @@ public class ClientFactorielle {
 	 * @return la valeur de la factorielle de l'entier this.valeur
 	 * @throws IOException
 	 */
-	public int demanderCalcul () throws IOException{
+	public long demanderCalcul () throws IOException{
         InetAddress addresse = this.ip;
         Socket socket = new Socket(addresse, this.port);
  
@@ -38,7 +38,7 @@ public class ClientFactorielle {
  
         output.println(this.valeur);
  
-        int result = input.nextInt();
+        Long result = input.nextLong();
  
         input.close();
         socket.close();
@@ -55,7 +55,7 @@ public class ClientFactorielle {
 		int port  = Integer.parseInt(argv[0]);
 		InetAddress ip = InetAddress.getByName(argv[1]);
 		int valeur = Integer.parseInt(argv[2]);
-		int resultat = -1;
+		long resultat = -1;
 		ClientFactorielle cf = new ClientFactorielle(port, ip, valeur);
 		
 		try {
