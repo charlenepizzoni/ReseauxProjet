@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import factorielle.ClientFactorielle;
 
 public class ServeurFactorielle {
 	int port;
