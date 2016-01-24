@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import factorielle.ServeurFactorielle;
 
 public class ClientFactorielle {
 	int port;
