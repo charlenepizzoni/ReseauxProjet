@@ -53,8 +53,14 @@ public class ServeurFactorielle {
 		            if (val < 1){
 		            	res = 1;
 		            }
+		            else if(getCache().containsKey(val)){
+		            	res = getCache().get(val);		            	
+		            }
+		            		            
 		            else {
 		            	ClientFactorielle cf = new ClientFactorielle(port, ip, val-1);
+		            	res = val * cf.demanderCalcul();
+		            	getCache().put(val, res);
 		            }
 		            output = socket.getOutputStream();
 		            output.write(res);
@@ -72,6 +78,10 @@ public class ServeurFactorielle {
 			ClientThread clientThread = new ClientThread(port, ip, socket);
 			clientThread.run();
 		}
+	}
+	
+	public Map<Integer, Integer> getCache(){
+		return this.cache;
 	}
 	
 	public void main(String[] argv) throws IOException{
