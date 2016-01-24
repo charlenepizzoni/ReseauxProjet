@@ -3,9 +3,12 @@ package factorielle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
+
 import factorielle.ServeurFactorielle;
 
 public class ClientFactorielle {
@@ -27,14 +30,20 @@ public class ClientFactorielle {
 	 * @throws IOException
 	 */
 	public int demanderCalcul () throws IOException{
-		int res;
-		Socket s = new Socket(this.ip, this.port);
-		InputStream input = s.getInputStream();
-		OutputStream output = s.getOutputStream();
-		output.write(this.valeur);
-		res = input.read();		
-		s.close();
-		return res;
+        InetAddress addresse = this.ip;
+        Socket socket = new Socket(addresse, this.port);
+ 
+        Scanner input = new Scanner(socket.getInputStream());
+        PrintStream output = new PrintStream(socket.getOutputStream());
+ 
+        output.println(this.valeur);
+ 
+        int result = input.nextInt();
+ 
+        input.close();
+        socket.close();
+ 
+        return result;
 	}
 	
 	/**
